@@ -1,0 +1,135 @@
+$# pass  this  in as a default header to all templates?  then they can use it, or not.
+
+{% macro header() %}
+<header class="cluster center">
+    <div class="h-card">
+        <a id="logo" rel="me" class="u-url u-uid" href="https://www.maxwelljoslyn.com">Maxwell Joslyn</a>
+        <a rel="me" href="mailto:maxwelljoslyn@gmail.com"></a>
+    </div>
+    <nav class="cluster">
+        <a href="/index">Home</a>
+        <a href="/about">About</a>
+        <a href="/blog" rel="feed" type="text/html" title="Maxwell's Blog">Blog</a>
+        <a href="/tags">Tags</a>
+    </nav>
+</header>
+
+$# make this a function in utility.py
+
+{% macro published(post) %}
+{% if post.properties.url == 'https://www.maxwelljoslyn.com' %}
+{% elif post.properties.published %}
+<span class="when-published">Published <a href="{{post.properties.url}}"><time class="dt-published" datetime="{{raw_published(post)}}">{{ymdonly(raw_published(post))}}</time></a> at {{timeonly(raw_published(post))}}</span>
+{% endif %}
+{% endmacro %}
+
+$# make this a function in utility.py
+{% macro updated(post) %}
+{% if post.properties.updated %}
+<span class="when-updated">Updated <a href="{{post.properties.url}}"><time class="dt-updated" datetime="{{raw_updated(post)}}">{{ymdonly(raw_updated(post))}}</time></a></span>
+{% endif %}
+{% endmacro %}
+
+$# make this a function in utility.py
+<!-- 
+     "content" : "i ate a sandiwich"
+     "content" : {"html"
+     "content" : [{"html" : "fuck"}]
+-->
+{% macro content(post) %}
+{% if "content" not in post.properties %}
+{% elif post.properties.content is string %}
+<!-- I don't obey the mandate that generic notes need to be plaintext: I'll happily stick in HTML. therefore, the Jinja "safe" filter is needed even when properties.content looks like a bare string -->
+<!-- FIXME: given this section in Micropub specification, since I want to be able to support HTML even if the post is a note, I should store all post content in the content[0].html scheme when saving a new post.
+     e.g. content : [{"html" : "the-content-is-here"}]
+     Why? because I want to be able to "return the content property as an object containing an html property"
+     if I store data as a mere string in properties.content, then if I return that to a Micropub client which supports editing, semantically that content will be understood as plain text. which is not what I want.
+
+     <q>HTML Content
+
+     If the source of the post was written as HTML content, then the endpoint MUST return the content property as an object containing an html property. Otherwise, the endpoint MUST return a string value for the content property, and the client will treat the value as plain text. This matches the behavior of the values of properties in [microformats2-parsing].</q>
+
+-->
+{{post.properties.content|safe}}
+{% elif post.properties["content[html]"] %} %}
+{{post.properties["content[html]"|safe]}}
+{% elif post.properties.content[0].html %}
+{{post.properties.content[0].html|safe}}
+{% else %}
+{% endif %}
+{% endmacro %}
+
+
+
+
+
+$# make this a function in utility.py
+def render_categories(post):
+{% if post.properties.category and post.properties.category is not string %}
+{# it's a list #}
+
+$# replace this with an function taglinkify, which just formats strang, and then a ",".join
+
+<div class="tags">Tags: {% for c in post.properties.category %}<a class="p-category" href="/tags/{{c}}">{{c}}</a>{% if not loop.last %}, {% else %}{% endif %}
+    {% endfor %}</div>
+{% else %}
+{% endif %}
+{% endmacro %}
+
+
+$# get this working again - see templator_example.html
+{% macro post_type(post) %}
+{% if post.properties.type %}
+Post Type: {{post.properties.type[0]}}
+{% else %}
+No post type detected.
+{% endif %}
+{% endmacro %}
+
+
+{% macro metadata_area(post, np) %}
+{{ hcard() }}
+{% if post.properties["show-metadata"] %}
+{{ date(post) }}
+{{ categories(post) }}
+{{ next_prev(np) }}
+{% endif %}
+{% endmacro %}
+
+
+
+{% macro join_drongo() %}
+<div>
+    <!-- Begin Mailchimp Signup Form -->
+
+
+    <div id="mc_embed_signup">
+        <form action="https://maxwelljoslyn.us17.list-manage.com/subscribe/post?u=a4f320c858eb89641f87a7bf1&amp;id=8c49f38e34" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+            <div id="mc_embed_signup_scroll">
+	        <span class="drongo-cta">Join <strong>The Drongo</strong> for up-to-date tomfoolery</span>
+                <br>
+	        <label class="muted" for="mce-EMAIL">Email*
+                </label>
+	        <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" data-kpxc-id="mce-EMAIL">
+                <br>
+	        <label class="muted" for="mce-FNAME">First Name*
+                </label>
+	        <input type="text" value="" name="FNAME" class="required" id="mce-FNAME" data-kpxc-id="mce-FNAME">
+                <br>
+	        <label class="muted" for="mce-LNAME">Last Name(s)</label>
+	        <input type="text" value="" name="LNAME" class="" id="mce-LNAME" data-kpxc-id="mce-LNAME">
+	        <span id="mce-responses" class="clear">
+		    <span class="response" id="mce-error-response" style="display:none"></span>
+		    <span class="response" id="mce-success-response" style="display:none"></span>
+	        </span>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <br>
+                <span style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_a4f320c858eb89641f87a7bf1_8c49f38e34" tabindex="-1" value=""></span>
+                <span class="clear"><input type="submit" value="I'm a Drongo" name="subscribe" id="mc-embedded-subscribe" class="button"></span>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script><script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+    <!--End mc_embed_signup-->
+</div>
+{% endmacro %}
+

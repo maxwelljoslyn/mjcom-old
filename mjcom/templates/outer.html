@@ -1,0 +1,143 @@
+$def with(inner)
+
+<!DOCTYPE html5>
+<html>
+<head>
+<meta charset="UTF-8" http-equiv="content-type" content="text/html"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  $inner.title
+</title>
+$# styles
+<link rel="whostyle" type="text/css" href="static/whostyle.css" />
+<link rel="stylesheet" type="text/css" href="static/new.css">
+<link rel="stylesheet" type="text/css" href="static/bls.css">
+<link rel="stylesheet" type="text/css" href="static/fluffy-stuffy/webmention.css" />
+
+<!-- javascript -->
+<script src="static/callout.js" async></script>
+<script src="static/fluffy-stuffy/webmention.js" async></script>
+<script src="static/leader-line.min.js" async></script>
+
+<!-- Bigfoot.js for footnotes -->
+<!-- <link rel="stylesheet" type="text/css" href="static/bigfoot-default.css"> -->
+<!-- <script type="text/javascript" src="static/jquery.min.js"></script> -->
+<!-- <script type="text/javascript" src="static/bigfoot.min.js"></script> -->
+<!-- <script type="text/javascript" src="static/run-bigfoot.js"></script> -->
+
+<!-- indieweb -->
+<link rel="webmention" href="https://webmention.io/www.maxwelljoslyn.com/webmention"/>
+<link rel="pingback" href="https://webmention.io/www.maxwelljoslyn.com/xmlrpc"/>
+<link rel="authorization_endpoint" href="https://indieauth.com/auth">
+<link rel="token_endpoint" href="https://tokens.indieauth.com/token">
+<link rel="micropub" href="https://www.maxwelljoslyn.com/micropub">
+<link rel="microsub" href="https://aperture.p3k.io/microsub/418">
+<link rel="feed" type="text/html" title="Maxwell's Blog" href="https://www.maxwelljoslyn.com/blog" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="$url"/>
+
+$og_image = post["properties"].get("og-image")
+$if og_image:
+$    <meta property="og:image" content="$og_image"/>
+</head>
+
+<body>
+
+  $:inner
+
+
+$# todo move this to the header tag per-post-type.
+$if 'offload' in inner.properties.category:
+$    <div class="muted center">
+$    <span>Part of the blogging challenge <a href="https://100daystooffload.com">100 Days To Offload.</a></span>
+$    </div>
+
+$# todo  should I use a footer tag here ?
+$# i'm imaginin some posts will have their own way of doing footes, eg the 'radical new way to present poems' page design for indiv. poems where just blasts into 'TITLE .... [two lines lower and centered] a parody of TITLE .... [two lines lower and rightmost] (by Maxwell Joslyn)'
+
+$wm = inner.properties.get('wm', False)
+$if wm:
+$    <div id="webmentions" class="center"></div>
+
+  <script data-goatcounter="https://maxwelljoslyn.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+the old one:
+
+{% import "macro.html" as macro with context %}
+{# 'with context' is needed to make flask_login's current_user attribute available -- their docs didn't say so, of course #}
+{# jinja literals described here --- https://jinja.palletsprojects.com/en/2.11.x/templates/#import-context-behavior #}
+<!doctype html>
+<html lang="en">
+    {{ macro.head(post) }}
+
+    <body>
+        {{ macro.header() }}
+
+        {{ macro.login_status() }}
+        
+        <article class="center {% if post.properties.feed %}h-feed{% else %}h-entry{% endif %}">
+
+            <h1 id="article-title" class="{% if not macro.name(post) %}{% else %}p-name{% endif %}"><a class="u-url" href="{{post.properties.url}}">{{ macro.name(post) }}</a></h1>
+
+            {{ macro.hcard() }}
+$if post.properties["show-metadata"]
+$date
+$#next, previous
+$categories
+            
+            <div id="article-body" class="{% if post.properties.feed %}{% else %}e-content{% endif %} {% if not macro.name(post) %}p-name{% else %}{% endif %}">
+                {{ macro.content(post) }}
+                {{ macro.offload(post) }}
+            </div>
+            
+        </article>
+
+        {{macro.webmentions(post)}}
+
+        <div class="center" id="webmentions"></div>
+
+        <script data-goatcounter="https://maxwelljoslyn.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+        <script type="text/javascript" src="//script.crazyegg.com/pages/scripts/0107/0720.js" async="async"></script>  
+
+{#        {{ macro.join_drongo() }} #}
+        
+    </body>
+</html>
+
+
+        <article class="center h-feed">
+            <h1 id="article-title"><a class="u-url" href="https://www.maxwelljoslyn.com/tags/{{a_tag}}">Posts Tagged "{{a_tag}}"</a></h1>
+
+            
+            <div id="article-body">

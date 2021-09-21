@@ -1,0 +1,31 @@
+<p class="p-summary">Here are those poems which I wish to share. I love jokes, rhymes, and wordplay, and I savor the challenge of fitting ideas into metric verse.</p>
+
+
+<strong>Maxwell's Top Picks</strong>
+
+<ol>
+    <li>"<a href="/poems/huge-katana">Huge Katana</a>"</li>
+    <li>???</li>
+    <li>???</li>
+    <li>???</li>
+    <li>???</li>
+</ol>
+
+
+
+
+# write SQL queries to assemble both these lists in code
+# then run them inside the Poems route 
+
+# collected_poem is a render function now found in utility.py
+# has overlap with mj.poem(full=True)
+
+{% for post in after_hooked %}
+{{macro.collected_poem(post)}}
+{% endfor %}
+
+{% for post in hooked_and_before %}
+{{macro.collected_poem(post)}}
+{% endfor %}
+
+

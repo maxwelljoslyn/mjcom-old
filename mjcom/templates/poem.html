@@ -1,0 +1,32 @@
+$def with (poem)
+$var title: $name
+
+#ange
+#do i have to do 
+#$ intro, maintext, outro = poem['intro'], poem['maintext'], poem['outro']
+#every time?
+
+
+
+This is
+<h1 class="p-name poem-title">$name</span>
+
+$import utility as u
+<p>
+by 
+$ u.authors_text([u.author_format(author) for author in self.author])
+</p>
+
+$ intro, maintext, outro = poem['intro'], poem['maintext'], poem['outro']
+$if intro is not None:
+<div class=p-intro p-summary>$intro</div>
+
+<div class=p-maintext>$maintext</div>
+
+$if outro is not None:
+<div class=p-outro>$outro</div>
+
+
+
+
+

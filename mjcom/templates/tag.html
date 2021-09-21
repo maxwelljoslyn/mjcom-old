@@ -1,0 +1,26 @@
+$def with (name, tag, description)
+$#posts, count)
+$var title: name
+
+<article class="center h-feed">
+  <h1 id="article-title"><a class="u-url" href="https://www.maxwelljoslyn.com/tags/{{a_tag}}">$title</a></h1>
+
+
+  <div id="article-body">
+
+    $if description:
+    <p>$description</p>
+
+    <p>There are $count posts tagged "$tag".</p>
+
+
+    <span class="muted">Return to <a href="/tags">list of all tags</a></span>
+
+    <ul>
+      $for post in posts:
+      <li><span class="h-entry"><a class="u-url" href=$"post['url']">$post['name']</a></span></li>
+    </ul>
+
+  </div>
+
+</article>

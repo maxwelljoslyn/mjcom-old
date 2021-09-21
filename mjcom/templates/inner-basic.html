@@ -1,0 +1,96 @@
+$def with (properties)
+$var title: utility.render_name(properties['name'])
+$def p(whatever): return properties.get(whatever)
+
+
+
+<article class="center h-entry">
+<h1 id="article-title" class="p-name"><a class="u-url" href="$p('url')">$title</a>
+</h1>
+
+<a rel="author" class="p-author" href="https://www.maxwelljoslyn.com" style="display: none;">Maxwell Joslyn</a>
+
+<span class="when-published">Published <a href="$p('url')"><time class="dt-published" datetime="
+
+$# todo convert {timestamp tz whatever} 3-elem dict into ISO8601 full timestamp
+
+">
+
+$# todo
+$# date
+</time></a> at 
+$# time + tz
+
+</span>
+
+$if p('category'):
+$<div class="tags">Tags: 
+  ",".join([utility.tag_template(c) for c in p('category')])
+
+</div>
+
+$# how it looked before for comparison
+$#<a class="p-category" href="/tags/$c">$c</a>, 
+$#<a class="p-category" href="/tags/poetry">poetry</a>, 
+$#<a class="p-category" href="/tags/starwars">starwars</a>
+
+
+<div id="article-body" class="e-content ">
+                
+
+$# todo break out intro, outro, etc into their own properties.
+
+$# otherwise these don't work yet ...  even if angelo parser picks up p-intro I Don't have those yet, only 'intro'
+$# $if p('intro'):
+$# $   <div class="muted p-intro p-summary">
+$# $   <p>$p('intro')</p>
+$# $   </div>
+$# 
+$# 
+$# $if p('syndicated-to'):
+$# $   <div>Syndicated to
+$# $     ",".join([utility.syndication_template(s) for s in p('syndicated-to')])
+$# $   </div>
+
+
+
+
+$# poems will need their own intro/maintext/outro template, based on this one. nothing else has gotten the intro/maintext/outro treatment.
+
+<div class="poem-container">
+<pre class="poem">It is something to have warred as we have warred.
+It is something to have done as we have done.
+It is something to have battled with a lord,
+And, though it mean your death, see battle won.
+
+It is something to attain the weightless blade,
+Though blade of equal make yet lay you low.
+It is something that your killer was repaid,
+Though peace now be the sum of all you know.
+
+To have seen you spurn the Council, with your face
+Brave as a file of troopers for the fray,
+Calmer than Time, a sentinel of Space:
+It is something, though you went from me today.
+
+To have known the things that younglings may not learn,
+And turned away all passions, base or high;
+It is something when one's fate one may discern;
+It is something to have lived to watch you die.
+
+In a time of leisure droids and death-stick churls,
+And squabbling smugglers wallowing in ire,
+In a galaxy of Twi'lek dancing girls,
+It is something to reject all heart's desire.
+
+Lo, simple are the robes in which he burns.
+Yea, tidy is the beard upon his chin.
+Let the Dark Side tempt a lesser man to turn
+With its lightning. It won't master Master Jinn.
+</pre>
+
+</div>
+
+</div>
+
+</article>

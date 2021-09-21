@@ -1,0 +1,57 @@
+$ def with(posts_by_month, num_posts)
+
+
+Don't forget, use a class=tight list!
+
+Also, inspect the post type (which might be an mj type, like a sith lord, right??) so you can preprend it ot the post title 
+
+
+<p>Here are all {{num_posts}} publicly-listed posts on this site.</p>
+
+<p><em>Articles</em>, including <em>Poems</em>, are considered evergreen. <em>Notes</em> are shorter and more ephemeral: updates, announcements, and one-offs.</p>
+
+$ for (month, year), posts in posts_by_month.items():
+$month $year
+<ul class="tight">
+  $ for post in posts
+  post.discover_type + 
+        <span class="h-entry"><a class="u-url" href="{{entry.properties.url}}">{% if entry.properties.name %}{{entry.properties.name}}{% else %}a note{% endif %}</a></span>
+
+</ul>
+
+
+LATER: split them up by post type :^):^):^) to achieve the "fancy view"
+
+
+
+{% set ns = namespace(pub=None, in_ul=False) %}
+{% for entry in entries %}
+
+{% if ns.pub != macro.ymdonly(macro.raw_published(entry)) %}
+{% if ns.in_ul %}
+</ul>
+{% set ns.in_ul=False %}
+{% endif %}
+{{ macro.ymdonly(macro.raw_published(entry)) }}
+{% set ns.pub = macro.ymdonly(macro.raw_published(entry)) %}
+<ul class="tight">
+    {% set ns.in_ul=True %}
+    {% endif %}
+    <li>
+        <span class="h-entry"><a class="u-url" href="{{entry.properties.url}}">{% if entry.properties.name %}{{entry.properties.name}}{% else %}a note{% endif %}</a></span>
+    </li>
+    {% endfor %}
+
+
+this generates  the old style blog
+yyyy-mm-30
+- entry 1
+- entry 2
+- entry 3
+yyyy-mm-29
+- entry 1
+- entry 2
+yyyy-mm-28
+- entry 1
+yyyy-mm-27
+- entry 1
