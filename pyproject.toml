@@ -4,9 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["Maxwell Joslyn <maxwelljoslyn@gmail.com>"]
 
+[tool.poetry.plugins."web.apps"]
+mjcom = "mjcom:app"
+
 [tool.poetry.dependencies]
 python = "^3.9,<3.10"
-understory = "^0.0.63"
+understory = "^0.0.70"
+# dnd = { git = "https://github.com/maxwelljoslyn/dnd.git", branch = "main" }
+# todo this can only be done once dnd repo has pyproject and other trappings so that poetry will install it for you
 
 [tool.poetry.dev-dependencies]
 
