@@ -45,10 +45,10 @@ class Tag:
     # posts, count = tx.db.posts_tagged(self.tag)
 
     def get(self):
-        return templates.tag(
+        return app.view.tag(
                 f"Posts Tagged '{tag}'",
                 self.tag,
-                description.get(self.tag)
+                descriptions.get(self.tag)
                 # posts,
                 # count)
                 )
@@ -58,7 +58,7 @@ class Tag:
 class Tags:
 
     def get(self):
-        return templates.tags("All Tags")
+        return app.view.tags("All Tags")
 
 # wont work out of the box
 #@app.control("alltags")
@@ -87,6 +87,14 @@ class SithLordChallenge:
     return app.view.sithlordchallenge(posts)
     pass
 
+@app.route("sithlordchallenge/{sithlord}")
+def SithLord:
+
+    #    def get(self):
+    #        lord = tx.pub.read(tx.request.uri.path)["resource"]
+    #        return web.view.sithlord(lord)
+
+    pass
 
 
 
